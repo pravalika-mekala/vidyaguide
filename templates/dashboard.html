@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h2 class="fw-bold mb-2">Welcome, {{ user }}</h2>
+  <p class="muted mb-0">Use your dashboard to analyze resumes, explore opportunities, and get AI-guided career support.</p>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold">Profile</h5>
+      <p class="muted">Update personal details, college, experience, and location preferences.</p>
+      <a href="/profile" class="btn btn-brand">Manage Profile</a>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold">Study Materials</h5>
+      <p class="muted">Access PDF sample materials for interviews, DSA, and soft-skills preparation.</p>
+      <a href="/materials" class="btn btn-brand">Open Materials</a>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold">Learning Hub</h5>
+      <p class="muted">Structured interview prep, DSA, soft skills, demo interviews, and daily updates.</p>
+      <a href="/learning-hub" class="btn btn-brand">Open Hub</a>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold">Resume Analyzer</h5>
+      <p class="muted">Score your resume with ATS-focused checks and practical improvement tips.</p>
+      <a href="/resume" class="btn btn-brand">Analyze Resume</a>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold">Job Suggestions</h5>
+      <p class="muted">Browse job roles aligned with your current skill profile.</p>
+      <a href="/jobs" class="btn btn-brand">View Jobs</a>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold">AI Career Assistant</h5>
+      <p class="muted">Ask targeted questions on skills, projects, interviews, and roadmap planning.</p>
+      <a href="/chatbot" class="btn btn-brand">Open Assistant</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

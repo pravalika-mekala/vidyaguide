@@ -1,0 +1,95 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Admin Dashboard | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h3 class="fw-bold mb-2">Admin Dashboard</h3>
+  <p class="muted mb-0">Separate admin control center for user and application management.</p>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="panel-card p-4 h-100">
+      <h6 class="muted mb-2">Total Users</h6>
+      <div class="kpi-value">{{ total_users }}</div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel-card p-4 h-100">
+      <h6 class="muted mb-2">Total Applications</h6>
+      <div class="kpi-value">{{ total_applications }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel-card p-4 mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Recent Users</h5>
+    <a href="/admin/users" class="btn btn-sm btn-outline-primary">Open User Management</a>
+  </div>
+  {% if users %}
+  <ul class="list-group">
+    {% for u in users %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span><strong>{{ u.name }}</strong> <span class="muted">({{ u.email }})</span></span>
+      <span class="badge badge-soft">{{ u.professional_title or "No title" }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted mb-0">No users found.</p>
+  {% endif %}
+</div>
+
+<div class="panel-card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Recent Applications</h5>
+    <a href="/admin/applications" class="btn btn-sm btn-outline-primary">Open Application List</a>
+  </div>
+  {% if applications %}
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Job</th>
+          <th>Company</th>
+          <th>Location</th>
+          <th>Skills</th>
+          <th>Resume</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in applications %}
+        <tr>
+          <td>{{ a.id }}</td>
+          <td>{{ a.created_at }}</td>
+          <td>{{ a.full_name }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.phone }}</td>
+          <td>{{ a.job_title }}</td>
+          <td>{{ a.company }}</td>
+          <td>{{ a.location }}</td>
+          <td>{{ a.detected_skills }}</td>
+          <td>
+            {% if a.resume_file_id %}
+            <a href="/files/{{ a.resume_file_id }}">Download</a>
+            {% else %}
+            {{ a.resume_filename }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted mb-0">No applications submitted yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

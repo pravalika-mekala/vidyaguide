@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}VidyaGuide - Unlock Your Career Potential{% endblock %}
+
+{% block content %}
+<div class="landing-hero py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 text-center text-lg-start animate-fade-in">
+                <h1 class="display-4 fw-800 mb-3">Your Journey, <span class="text-gradient">Our Support.</span></h1>
+                <p class="lead mb-4 opacity-75">
+                    Job hunting is tough, but you don't have to do it alone. VidyaGuide is your personal career partner—helping you sharpen your resume, prep for interviews, and find the right path with ease.
+                </p>
+                <div class="d-flex justify-content-center justify-content-lg-start gap-3 animate-slide-up">
+                    <a href="/signup" class="btn btn-lg btn-nav-logout px-4" style="background: #10b981 !important; color: white !important;">Join VidyaGuide</a>
+                    <a href="/login" class="btn btn-lg btn-hero-login px-4">Login</a>
+                </div>
+            </div>
+            <div class="col-lg-6 animate-fade-in">
+                <div class="hero-image-container rounded-5 overflow-hidden shadow-lg border">
+                    <img src="/static/images/hero-human.png" alt="Confident Professionals" class="img-fluid hero-img">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-4 mb-5 justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="feature-card h-100 p-4 rounded-4 glass-card border">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="feature-icon-sm me-3">📄</div>
+                    <h3 class="h5 fw-bold mb-0">Resume Support</h3>
+                </div>
+                <p class="small opacity-75 mb-0">We’ll help you highlight your strengths so your resume truly reflects your potential to employers.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-5">
+            <div class="feature-card h-100 p-4 rounded-4 glass-card border">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="feature-icon-sm me-3">🤖</div>
+                    <h3 class="h5 fw-bold mb-0">Career Conversations</h3>
+                </div>
+                <p class="small opacity-75 mb-0">Talk to our AI Assistant anytime for interview tips, tech advice, or just a bit of career encouragement.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="landing-info rounded-5 p-5 glass-card border text-center animate-fade-in mb-5">
+        <h2 class="fw-bold mb-3">Start Small, Dream Big.</h2>
+        <p class="opacity-75 mb-4 mx-auto" style="max-width: 600px;">Whether you're just starting out or looking for your next big move, we're here to make the process a little simpler and a lot more human.</p>
+        <a href="/signup" class="btn btn-lg btn-nav-logout px-5" style="background: #10b981 !important; color: white !important;">Create Your Free Account</a>
+    </div>
+</div>
+
+<style>
+.fw-800 { font-weight: 800; }
+
+.text-gradient {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-img {
+    transition: transform 0.5s ease;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.hero-image-container:hover .hero-img {
+    transform: scale(1.05);
+}
+
+.feature-icon-sm {
+    font-size: 1.8rem;
+}
+
+.btn-hero-login {
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+    background: transparent !important;
+    font-weight: 600;
+}
+
+.btn-hero-login:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+html:not(.dark-theme) .btn-hero-login {
+    border-color: #0b4f6c !important;
+    color: #0b4f6c !important;
+}
+
+html:not(.dark-theme) .btn-hero-login:hover {
+    background: rgba(11, 79, 108, 0.05) !important;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+html:not(.dark-theme) .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.animate-fade-in { animation: fadeIn 1s ease-out; }
+.animate-slide-up { animation: slideUp 0.8s ease-out; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+{% endblock %}

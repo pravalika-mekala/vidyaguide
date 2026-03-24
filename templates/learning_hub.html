@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Hub | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h2 class="fw-bold mb-2">Learning Hub for {{ user }}</h2>
+  <p class="muted mb-0">A structured roadmap for interview preparation, technical growth, and confidence building.</p>
+</div>
+
+<div class="panel-card p-4 mb-4">
+  <h5 class="fw-bold mb-2">Choose Your Target Role</h5>
+  <p class="muted mb-3">Your prep structure updates based on this role.</p>
+  <form action="/learning-hub/role" method="post" class="row g-2 align-items-end">
+    <div class="col-md-6 col-lg-4">
+      <label class="form-label">Target Role</label>
+      <select name="role" class="form-select" required>
+        {% for role_value, role_name in role_options %}
+        <option value="{{ role_value }}" {% if role_value == selected_role %}selected{% endif %}>{{ role_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-brand" type="submit">Update Plan</button>
+    </div>
+  </form>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold mb-2">Interview Materials ({{ role_label }})</h5>
+      <ul class="mb-3">
+        {% for item in interview_materials %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <a href="/chatbot" class="btn btn-brand btn-sm">Practice with AI Assistant</a>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold mb-2">DSA Materials</h5>
+      <ul class="mb-3">
+        {% for item in dsa_materials %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <span class="badge badge-soft">Target: 2 problems per day</span>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold mb-2">Soft Skills Management</h5>
+      <ul class="mb-3">
+        {% for item in softskills_management %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <span class="badge badge-soft">Track progress weekly</span>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold mb-2">Demo Interviews for Anxiety Management</h5>
+      <ul class="mb-3">
+        {% for item in demo_interviews %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <a href="/chatbot" class="btn btn-brand btn-sm">Run a Demo Interview</a>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-8">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold mb-3">Recommended Course Structure</h5>
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Focus</th>
+              <th>Timeline</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for phase, focus, timeline in course_structure %}
+            <tr>
+              <td>{{ phase }}</td>
+              <td>{{ focus }}</td>
+              <td>{{ timeline }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="panel-card p-4 h-100">
+      <h5 class="fw-bold mb-2">Daily Update</h5>
+      <p class="muted mb-2">{{ today_label }}</p>
+      <p class="mb-3">{{ daily_update }}</p>
+      {% if task_done %}
+      <span class="badge badge-soft mb-3">Completed for today</span>
+      <form action="/learning-hub/daily-task" method="post">
+        <input type="hidden" name="action" value="reset">
+        <button type="submit" class="btn btn-outline-secondary btn-sm">Mark as Not Done</button>
+      </form>
+      {% else %}
+      <form action="/learning-hub/daily-task" method="post">
+        <input type="hidden" name="action" value="complete">
+        <button type="submit" class="btn btn-brand btn-sm">Mark as Done</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

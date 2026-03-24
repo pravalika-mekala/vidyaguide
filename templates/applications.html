@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Applications | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="hero-card">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold mb-0">My Applications</h3>
+    <span class="badge badge-soft">Total: {{ total }}</span>
+  </div>
+  <p class="muted mb-4">Only your submitted applications are shown here.</p>
+
+  {% if applications %}
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Profiles</th>
+          <th>Job</th>
+          <th>Company</th>
+          <th>Location</th>
+          <th>Skills</th>
+          <th>Resume</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in applications %}
+        <tr>
+          <td>{{ a.id }}</td>
+          <td>{{ a.created_at }}</td>
+          <td>{{ a.full_name }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.phone }}</td>
+          <td>
+            {% if a.linkedin_url %}
+              <a href="{{ a.linkedin_url }}" target="_blank">LinkedIn</a>
+            {% endif %}
+            {% if a.linkedin_url and a.github_url %} | {% endif %}
+            {% if a.github_url %}
+              <a href="{{ a.github_url }}" target="_blank">GitHub</a>
+            {% endif %}
+          </td>
+          <td>{{ a.job_title }}</td>
+          <td>{{ a.company }}</td>
+          <td>{{ a.location }}</td>
+          <td>{{ a.detected_skills }}</td>
+          <td>
+            {% if a.resume_file_id %}
+              <a href="/files/{{ a.resume_file_id }}">Download</a>
+              {% if a.resume_filename %}<span class="muted"> ({{ a.resume_filename }})</span>{% endif %}
+            {% else %}
+              {{ a.resume_filename }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted mb-0">No job applications submitted yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Profile | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h3 class="fw-bold mb-2">My Profile</h3>
+  <p class="muted mb-0">Maintain your personal and professional details for better job matching.</p>
+</div>
+
+{% if saved %}
+<div class="alert alert-success">Profile updated successfully.</div>
+{% endif %}
+
+<div class="panel-card p-4">
+  <form action="/profile" method="post" class="row g-3">
+    <div class="col-12">
+      <h6 class="fw-bold mb-1">Personal Details</h6>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Phone</label>
+      <input class="form-control" name="phone" value="{{ profile.phone or '' }}" placeholder="Phone number">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Current Location</label>
+      <input class="form-control" name="current_location" value="{{ profile.current_location or '' }}" placeholder="Current city/state">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Education Level</label>
+      <select name="education_level" class="form-select">
+        <option value="" {% if not profile.education_level %}selected{% endif %}>Select education level</option>
+        <option value="UG" {% if profile.education_level == "UG" %}selected{% endif %}>UG (Undergraduate)</option>
+        <option value="PG" {% if profile.education_level == "PG" %}selected{% endif %}>PG (Postgraduate)</option>
+        <option value="Diploma" {% if profile.education_level == "Diploma" %}selected{% endif %}>Diploma</option>
+        <option value="PhD" {% if profile.education_level == "PhD" %}selected{% endif %}>PhD</option>
+        <option value="Other" {% if profile.education_level == "Other" %}selected{% endif %}>Other</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Graduation Year</label>
+      <input class="form-control" type="number" min="1990" max="2100" name="graduation_year" value="{{ profile.graduation_year or '' }}" placeholder="e.g. 2026">
+    </div>
+    <div class="col-md-8">
+      <label class="form-label">Course / Degree</label>
+      <input class="form-control" name="course_name" value="{{ profile.course_name or '' }}" placeholder="e.g. B.Tech CSE, MBA, MCA">
+    </div>
+    <div class="col-md-8">
+      <label class="form-label">College / University</label>
+      <input class="form-control" name="college" value="{{ profile.college or '' }}" placeholder="College / University">
+    </div>
+
+    <div class="col-12 pt-2">
+      <h6 class="fw-bold mb-1">Professional Details</h6>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Experience (years)</label>
+      <input class="form-control" type="number" step="0.1" min="0" name="experience_years" value="{{ profile.experience_years or 0 }}">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Primary Professional Title</label>
+      <input class="form-control" name="professional_title" value="{{ profile.professional_title or '' }}" placeholder="e.g. Backend Developer Intern">
+    </div>
+    <div class="col-12">
+      <label class="form-label">Job Titles</label>
+      <input class="form-control" name="professional_titles" value="{{ profile.professional_titles or '' }}" placeholder="e.g. Backend Developer, Python Developer, API Engineer">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Preferred Roles In Priority Order</label>
+      <textarea class="form-control" rows="3" name="preferred_roles" placeholder="One per line or comma separated">{{ profile.preferred_roles or '' }}</textarea>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Preferred Locations In Priority Order</label>
+      <textarea class="form-control" rows="3" name="preferred_locations" placeholder="One per line or comma separated">{{ profile.preferred_locations or '' }}</textarea>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Skills Summary</label>
+      <textarea class="form-control" rows="3" name="skills_summary" placeholder="Key technical skills and strengths">{{ profile.skills_summary or '' }}</textarea>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">LinkedIn URL <span class="muted">(Optional)</span></label>
+      <input class="form-control" type="url" name="linkedin_url" value="{{ profile.linkedin_url or '' }}" placeholder="https://www.linkedin.com/in/your-profile">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">GitHub URL <span class="muted">(Optional)</span></label>
+      <input class="form-control" type="url" name="github_url" value="{{ profile.github_url or '' }}" placeholder="https://github.com/your-profile">
+    </div>
+    <div class="col-12">
+      <label class="form-label">Bio</label>
+      <textarea class="form-control" rows="3" name="bio" placeholder="Short professional summary">{{ profile.bio or '' }}</textarea>
+    </div>
+    {% if profile.default_resume_file_id %}
+    <div class="col-12">
+      <div class="alert alert-info mb-0">A default resume is already saved for fast apply. You can change it anytime from the Jobs page.</div>
+    </div>
+    {% endif %}
+    <div class="col-12">
+      <button class="btn btn-brand" type="submit">Save Profile</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Report | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="hero-card">
+      <h3 class="fw-bold mb-2">ATS Resume Report</h3>
+      <p class="muted mb-3">File type: <strong>{{ result.file_type }}</strong> | Word count: <strong>{{ result.word_count }}</strong></p>
+
+      <div class="mb-3">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="section-title">ATS Compatibility Score</span>
+          <strong>{{ result.score }} / 100</strong>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: {{ result.score }}%;">{{ result.score }}%</div>
+        </div>
+      </div>
+
+      <h5 class="section-title mt-4">Detected Skills</h5>
+      <div class="mb-3">
+        {% if result.skills %}
+          {% for s in result.skills %}
+            <span class="badge badge-soft me-1 mb-2">{{ s }}</span>
+          {% endfor %}
+        {% else %}
+          <p class="muted mb-0">No clear technical skills detected.</p>
+        {% endif %}
+      </div>
+
+      <h5 class="section-title mt-3">Suggested Job Roles</h5>
+      <ul class="list-group mb-0">
+        {% for job in result.jobs %}
+          <li class="list-group-item">{{ job }}</li>
+        {% else %}
+          <li class="list-group-item muted">No strong role match yet. Add more role-specific skills and project depth.</li>
+        {% endfor %}
+      </ul>
+
+      {% if set_as_default %}
+      <div class="alert alert-success mt-4 mb-0">This resume has been saved as your default resume for fast apply.</div>
+      {% endif %}
+
+      {% if recommended_jobs %}
+      <h5 class="section-title mt-4">Jobs Based On Your Skills</h5>
+      <div class="d-grid gap-3 mt-2">
+        {% for job in recommended_jobs %}
+        <div class="panel-card p-3">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <h6 class="fw-bold mb-1">{{ job.title }}</h6>
+            {% if job.already_applied %}
+            <span class="badge bg-success">Already Applied</span>
+            {% endif %}
+          </div>
+          <p class="muted mb-2">{{ job.company }} | {{ job.location }}</p>
+          <form action="/jobs/apply" method="post" class="row g-2">
+            <input type="hidden" name="job_title" value="{{ job.title }}">
+            <input type="hidden" name="company" value="{{ job.company }}">
+            <input type="hidden" name="location" value="{{ job.location }}">
+            <input type="hidden" name="detected_skills" value="{{ result.skills | join(', ') }}">
+            <input type="hidden" name="resume_filename" value="{{ resume_filename or '' }}">
+            <input type="hidden" name="resume_file_id" value="{{ resume_file_id or 0 }}">
+
+            <div class="col-md-4">
+              <input class="form-control" type="text" name="full_name" placeholder="Full Name" value="{{ candidate.full_name or user_name or '' }}" required>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" type="email" name="email" placeholder="Email" value="{{ candidate.email or user_email or '' }}" required>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{ candidate.phone or '' }}" required>
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" type="url" name="linkedin_url" placeholder="LinkedIn URL (optional)" value="{{ candidate.linkedin_url or '' }}">
+            </div>
+            <div class="col-md-6">
+              <input class="form-control" type="url" name="github_url" placeholder="GitHub URL (optional)" value="{{ candidate.github_url or '' }}">
+            </div>
+            <div class="col-12 d-grid d-md-block">
+              <button class="btn btn-brand btn-sm" type="submit" {% if job.already_applied %}disabled{% endif %}>
+                {% if job.already_applied %}Already Applied{% else %}Apply{% endif %}
+              </button>
+            </div>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="panel-card p-4 mb-4">
+      <h5 class="section-title">Extracted Resume Details</h5>
+      <div class="mt-3">
+        <div class="kpi mb-2">
+          <div class="muted small text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.05em;">Full Name</div>
+          <div class="fw-bold">{{ result.contact.name or "Not found" }}</div>
+        </div>
+        <div class="kpi mb-2">
+          <div class="muted small text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.05em;">Email Address</div>
+          <div class="fw-bold text-break">{{ result.contact.email or "Not found" }}</div>
+        </div>
+        <div class="kpi mb-2">
+          <div class="muted small text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.05em;">Phone Number</div>
+          <div class="fw-bold">{{ result.contact.phone or "Not found" }}</div>
+        </div>
+        <div class="row g-2">
+          <div class="col-6">
+            <div class="kpi h-100">
+              <div class="muted small text-uppercase fw-bold" style="font-size: 0.65rem;">LinkedIn</div>
+              <div class="fw-bold small">{{ "Found" if result.contact.linkedin else "Not found" }}</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="kpi h-100">
+              <div class="muted small text-uppercase fw-bold" style="font-size: 0.65rem;">GitHub</div>
+              <div class="fw-bold small">{{ "Found" if result.contact.github else "Not found" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-card p-4 mb-4">
+      <h5 class="section-title">Contact Checks</h5>
+      <div class="kpi mt-3">
+        <div class="muted">Email</div>
+        <div class="kpi-value">{{ "Yes" if result.contact.email else "No" }}</div>
+      </div>
+      <div class="kpi mt-2">
+        <div class="muted">Phone</div>
+        <div class="kpi-value">{{ "Yes" if result.contact.phone else "No" }}</div>
+      </div>
+      <div class="kpi mt-2">
+        <div class="muted">LinkedIn/GitHub</div>
+        <div class="kpi-value">{{ "Yes" if result.contact.linkedin or result.contact.github else "No" }}</div>
+      </div>
+    </div>
+
+    <div class="panel-card p-4 mb-4">
+      <h5 class="section-title">Section Coverage</h5>
+      <ul class="list-group list-group-flush mt-2">
+        <li class="list-group-item d-flex justify-content-between"><span>Summary</span><strong>{{ "Yes" if result.sections.summary else "No" }}</strong></li>
+        <li class="list-group-item d-flex justify-content-between"><span>Experience</span><strong>{{ "Yes" if result.sections.experience else "No" }}</strong></li>
+        <li class="list-group-item d-flex justify-content-between"><span>Projects</span><strong>{{ "Yes" if result.sections.projects else "No" }}</strong></li>
+        <li class="list-group-item d-flex justify-content-between"><span>Skills</span><strong>{{ "Yes" if result.sections.skills else "No" }}</strong></li>
+        <li class="list-group-item d-flex justify-content-between"><span>Education</span><strong>{{ "Yes" if result.sections.education else "No" }}</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel-card p-4 mt-4">
+  <h5 class="section-title">Improvement Recommendations</h5>
+  <ul class="list-group mt-3">
+    {% for tip in result.tips %}
+      <li class="list-group-item">{{ tip }}</li>
+    {% endfor %}
+  </ul>
+  <a href="/resume" class="btn btn-brand mt-3">Analyze Another Resume</a>
+</div>
+{% endblock %}

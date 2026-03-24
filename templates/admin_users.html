@@ -1,0 +1,128 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Manage Users | Admin{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h3 class="fw-bold mb-2">Manage Users</h3>
+  <p class="muted mb-0">Review profile details, clearly distinguish Admin vs User emails, and manage accounts.</p>
+</div>
+
+{% if deleted %}
+<div class="alert alert-success">User deleted successfully.</div>
+{% endif %}
+{% if deactivated %}
+<div class="alert alert-success">User deactivated successfully.</div>
+{% endif %}
+{% if reactivated %}
+<div class="alert alert-success">User reactivated successfully.</div>
+{% endif %}
+{% if error == "self_delete" %}
+<div class="alert alert-danger">You cannot delete your own admin account.</div>
+{% elif error == "not_found" %}
+<div class="alert alert-danger">User not found.</div>
+{% elif error == "self_deactivate" %}
+<div class="alert alert-danger">You cannot deactivate your own admin account.</div>
+{% endif %}
+
+<div class="panel-card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Users</h5>
+    <span class="badge badge-soft">Total: {{ total_users }}</span>
+  </div>
+  <div class="d-flex flex-wrap gap-3 mb-3">
+    <span class="badge bg-primary">Admins: {{ admin_count }}</span>
+    <span class="badge bg-info text-dark">Users: {{ user_count }}</span>
+  </div>
+
+  {% if users %}
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Phone</th>
+          <th>Education</th>
+          <th>Course</th>
+          <th>Grad Year</th>
+          <th>College</th>
+          <th>Experience</th>
+          <th>Current Location</th>
+          <th>Preferred Locations</th>
+          <th>Primary Title</th>
+          <th>Job Titles</th>
+          <th>LinkedIn</th>
+          <th>GitHub</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.name }}</td>
+          <td>{{ u.email }}</td>
+          <td>
+            {% if u.role == "Admin" %}
+            <span class="badge bg-primary">Admin</span>
+            {% else %}
+            <span class="badge bg-info text-dark">User</span>
+            {% endif %}
+          </td>
+          <td>{{ u.phone or '' }}</td>
+          <td>{{ u.education_level or '' }}</td>
+          <td>{{ u.course_name or '' }}</td>
+          <td>{{ u.graduation_year or '' }}</td>
+          <td>{{ u.college or '' }}</td>
+          <td>{{ u.experience_years or 0 }}</td>
+          <td>{{ u.current_location or '' }}</td>
+          <td>{{ u.preferred_locations or '' }}</td>
+          <td>{{ u.professional_title or '' }}</td>
+          <td>{{ u.professional_titles or '' }}</td>
+          <td>
+            {% if u.linkedin_url %}
+            <a href="{{ u.linkedin_url }}" target="_blank" rel="noopener noreferrer">View</a>
+            {% endif %}
+          </td>
+          <td>
+            {% if u.github_url %}
+            <a href="{{ u.github_url }}" target="_blank" rel="noopener noreferrer">View</a>
+            {% endif %}
+          </td>
+          <td>
+            {% if u.is_active %}
+            <span class="badge bg-success">Active</span>
+            {% else %}
+            <span class="badge bg-secondary">Inactive</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="d-flex gap-2">
+              {% if u.is_active %}
+              <form action="/admin/users/{{ u.id }}/deactivate" method="post" onsubmit="return confirm('Deactivate this user account?');">
+                <button class="btn btn-sm btn-outline-warning" type="submit">Deactivate</button>
+              </form>
+              {% else %}
+              <form action="/admin/users/{{ u.id }}/reactivate" method="post">
+                <button class="btn btn-sm btn-outline-success" type="submit">Reactivate</button>
+              </form>
+              {% endif %}
+              <form action="/admin/users/{{ u.id }}/delete" method="post" onsubmit="return confirm('Delete this user and all related data?');">
+                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted mb-0">No users found.</p>
+  {% endif %}
+</div>
+{% endblock %}

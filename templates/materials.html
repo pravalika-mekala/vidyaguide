@@ -1,0 +1,123 @@
+{% extends "admin_base.html" if admin_mode else "base.html" %}
+
+{% block title %}Study Materials | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h3 class="fw-bold mb-2">PDF Study Materials</h3>
+  <p class="muted mb-0">Use these sample materials for interview preparation, DSA, and communication practice.</p>
+</div>
+
+{% if uploaded %}
+<div class="alert alert-success">Material uploaded successfully.</div>
+{% endif %}
+{% if deleted %}
+<div class="alert alert-success">Material deleted successfully.</div>
+{% endif %}
+{% if error == "not_allowed" %}
+<div class="alert alert-danger">Only admin can upload materials.</div>
+{% elif error == "only_pdf" %}
+<div class="alert alert-danger">Only PDF files are allowed.</div>
+{% elif error == "empty_file" %}
+<div class="alert alert-danger">Uploaded file is empty.</div>
+{% elif error == "invalid_category" %}
+<div class="alert alert-danger">Invalid category selected.</div>
+{% elif error == "file_not_found" %}
+<div class="alert alert-danger">Material file not found.</div>
+{% endif %}
+
+{% if is_admin and admin_mode %}
+<div class="panel-card p-4 mb-4">
+  <h5 class="fw-bold mb-3">Admin Upload</h5>
+  <form action="/materials/upload" method="post" enctype="multipart/form-data" class="row g-3 align-items-end">
+    <div class="col-md-4">
+      <label class="form-label">Domain</label>
+      <input class="form-control" name="category" list="materialDomains" placeholder="e.g. dbms, os, dsa, aptitude, cn">
+      <datalist id="materialDomains">
+        <option value="dbms"></option>
+        <option value="os"></option>
+        <option value="dsa"></option>
+        <option value="general"></option>
+        {% for domain in material_domains %}
+        <option value="{{ domain }}"></option>
+        {% endfor %}
+      </datalist>
+    </div>
+    <div class="col-md-5">
+      <label class="form-label">Upload PDF Material</label>
+      <input class="form-control" type="file" name="file" accept=".pdf" required>
+    </div>
+    <div class="col-md-3 d-grid">
+      <button class="btn btn-brand" type="submit">Upload Material</button>
+    </div>
+  </form>
+</div>
+{% endif %}
+
+<div class="panel-card p-4">
+  <h5 class="fw-bold mb-3">Available Materials By Domain</h5>
+  <div class="mb-3">
+    <label class="form-label">Search Materials</label>
+    <input id="materialSearch" class="form-control" type="search" placeholder="Search by file name or domain">
+  </div>
+  {% if has_materials %}
+  {% for domain in material_domains %}
+  {% set items = materials_by_category[domain] %}
+  {% set label = domain_labels[domain] %}
+  <h6 class="fw-bold mt-3">{{ label }}</h6>
+  {% if items %}
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Size (KB)</th>
+          <th>Uploaded</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in items %}
+        <tr class="material-row" data-search="{{ label|lower }} {{ m.original_filename|lower }}">
+          <td>{{ m.original_filename }}</td>
+          <td>{{ (m.file_size / 1024) | round(1) }}</td>
+          <td>{{ m.created_at }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <a class="btn btn-sm btn-outline-primary" href="/materials/files/{{ m.id }}?preview=1" target="_blank">View</a>
+              <a class="btn btn-sm btn-primary" href="/materials/files/{{ m.id }}">Download</a>
+            </div>
+              {% if is_admin and admin_mode %}
+              <form action="/materials/{{ m.id }}/delete" method="post" onsubmit="return confirm('Delete this material?');">
+                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+              </form>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No {{ label }} materials yet.</p>
+  {% endif %}
+  {% endfor %}
+  {% else %}
+  <p class="muted mb-0">No study materials uploaded yet. Admin can upload PDF samples here.</p>
+  {% endif %}
+</div>
+
+<script>
+  const materialSearchInput = document.getElementById("materialSearch");
+  if (materialSearchInput) {
+    materialSearchInput.addEventListener("input", function () {
+      const query = materialSearchInput.value.trim().toLowerCase();
+      document.querySelectorAll(".material-row").forEach((row) => {
+        const haystack = row.dataset.search || "";
+        row.style.display = !query || haystack.includes(query) ? "" : "none";
+      });
+    });
+  }
+</script>
+{% endblock %}

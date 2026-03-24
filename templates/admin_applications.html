@@ -1,0 +1,62 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Applications | Admin{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h3 class="fw-bold mb-2">All Applications</h3>
+  <p class="muted mb-0">Central application list for admin review.</p>
+</div>
+
+<div class="panel-card p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Applications</h5>
+    <span class="badge badge-soft">Total: {{ total_applications }}</span>
+  </div>
+
+  {% if applications %}
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Job</th>
+          <th>Company</th>
+          <th>Location</th>
+          <th>Skills</th>
+          <th>Resume</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in applications %}
+        <tr>
+          <td>{{ a.id }}</td>
+          <td>{{ a.created_at }}</td>
+          <td>{{ a.full_name }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.phone }}</td>
+          <td>{{ a.job_title }}</td>
+          <td>{{ a.company }}</td>
+          <td>{{ a.location }}</td>
+          <td>{{ a.detected_skills }}</td>
+          <td>
+            {% if a.resume_file_id %}
+            <a href="/files/{{ a.resume_file_id }}">Download</a>
+            {% else %}
+            {{ a.resume_filename }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted mb-0">No applications submitted yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

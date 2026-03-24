@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Jobs | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="hero-card mb-4">
+  <h3 class="fw-bold mb-2">Job Suggestions</h3>
+  <p class="muted mb-4">Upload your resume to get skill-based job recommendations and apply directly.</p>
+
+  {% if applied %}
+  <div class="alert alert-success">Application submitted successfully.</div>
+  {% endif %}
+  {% if apply_error %}
+  <div class="alert alert-danger">{{ apply_error }}</div>
+  {% endif %}
+
+  {% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form action="/jobs/recommend" method="post" enctype="multipart/form-data" class="row g-3 align-items-end">
+    <div class="col-md-8">
+      <label class="form-label">Upload Resume (PDF / DOCX / TXT)</label>
+      <input type="file" name="file" class="form-control" accept=".pdf,.docx,.txt" required>
+    </div>
+    <div class="col-md-2">
+      <div class="form-check mt-4">
+        <input class="form-check-input" type="checkbox" name="set_default" value="1" id="jobsDefaultResume">
+        <label class="form-check-label" for="jobsDefaultResume">Set as default</label>
+      </div>
+    </div>
+    <div class="col-md-2 d-grid">
+      <button class="btn btn-brand" type="submit">Get Job Recommendations</button>
+    </div>
+  </form>
+</div>
+
+{% if candidate.role_priorities or candidate.location_priorities %}
+<div class="panel-card p-4 mb-4">
+  <h5 class="fw-bold mb-2">Priority Preferences</h5>
+  {% if candidate.role_priorities %}
+  <p class="mb-2"><strong>Roles:</strong> {{ candidate.role_priorities | join(" -> ") }}</p>
+  {% endif %}
+  {% if candidate.location_priorities %}
+  <p class="mb-0"><strong>Locations:</strong> {{ candidate.location_priorities | join(" -> ") }}</p>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if default_resume or resume_files %}
+<div class="panel-card p-4 mb-4">
+  <h5 class="fw-bold mb-2">Fast Apply Resume</h5>
+  {% if default_resume %}
+  <p class="mb-3">Current default resume: <strong>{{ default_resume.original_filename }}</strong></p>
+  {% else %}
+  <p class="muted mb-3">No default resume selected yet. Choose one below for faster applications.</p>
+  {% endif %}
+
+  {% if resume_files %}
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Resume</th>
+          <th>Purpose</th>
+          <th>Uploaded</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for resume in resume_files %}
+        <tr>
+          <td>{{ resume.original_filename }}</td>
+          <td>{{ resume.purpose }}</td>
+          <td>{{ resume.created_at }}</td>
+          <td>
+            {% if default_resume and default_resume.id == resume.id %}
+            <span class="badge bg-success">Default</span>
+            {% else %}
+            <form action="/jobs/default-resume/{{ resume.id }}" method="post">
+              <button class="btn btn-sm btn-outline-primary" type="submit">Set As Default</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if source == "recommended" %}
+<div class="panel-card p-4 mb-4">
+  <h5 class="fw-bold mb-2">Resume-Based Match Results</h5>
+  <p class="muted mb-2">Resume: <strong>{{ resume_filename }}</strong></p>
+
+  <p class="mb-2"><strong>Detected Skills:</strong>
+    {% if detected_skills %}
+      {{ detected_skills | join(", ") }}
+    {% else %}
+      No skills detected.
+    {% endif %}
+  </p>
+
+  <p class="mb-0"><strong>Predicted Roles:</strong>
+    {% if resume_roles %}
+      {{ resume_roles | join(", ") }}
+    {% else %}
+      No roles predicted.
+    {% endif %}
+  </p>
+</div>
+{% endif %}
+
+{% set display_jobs = recommended_jobs if source == "recommended" else jobs %}
+
+<div class="hero-card">
+  <h4 class="fw-bold mb-3">
+    {% if source == "recommended" %}
+      Recommended Jobs
+    {% else %}
+      All Available Jobs
+    {% endif %}
+  </h4>
+
+  {% if display_jobs %}
+  <div class="d-grid gap-3">
+    {% for job in display_jobs %}
+    <div class="panel-card p-3">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+        <div>
+          <h5 class="mb-1">{{ job.title }}</h5>
+          <p class="muted mb-0">{{ job.company }} | {{ job.location }}</p>
+        </div>
+        {% if job.already_applied %}
+        <span class="badge bg-success">Already Applied</span>
+        {% endif %}
+      </div>
+
+      <details class="mt-3">
+        <summary class="btn btn-outline-primary btn-sm">Apply</summary>
+        <form action="/jobs/apply" method="post" class="row g-2 mt-2">
+          <input type="hidden" name="job_title" value="{{ job.title }}">
+          <input type="hidden" name="company" value="{{ job.company }}">
+          <input type="hidden" name="location" value="{{ job.location }}">
+          <input type="hidden" name="detected_skills" value="{{ detected_skills | join(', ') }}">
+          <input type="hidden" name="resume_filename" value="{{ resume_filename }}">
+          <input type="hidden" name="resume_file_id" value="{{ resume_file_id }}">
+
+          <div class="col-md-4">
+            <input class="form-control" type="text" name="full_name" placeholder="Full Name" value="{{ candidate.full_name or user_name }}" required>
+          </div>
+          <div class="col-md-4">
+            <input class="form-control" type="email" name="email" placeholder="Email" value="{{ candidate.email or user_email }}" required>
+          </div>
+          <div class="col-md-4">
+            <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{ candidate.phone or '' }}" required>
+          </div>
+          <div class="col-md-6">
+            <input class="form-control" type="url" name="linkedin_url" placeholder="LinkedIn URL (optional)" value="{{ candidate.linkedin_url or '' }}">
+          </div>
+          <div class="col-md-6">
+            <input class="form-control" type="url" name="github_url" placeholder="GitHub URL (optional)" value="{{ candidate.github_url or '' }}">
+          </div>
+          <div class="col-12">
+            <small class="muted">At least one profile link is required: LinkedIn or GitHub.</small>
+          </div>
+          {% if not resume_file_id %}
+          <div class="col-12">
+            <small class="text-danger">Resume is mandatory. Upload one or set a default resume to enable apply.</small>
+          </div>
+          {% endif %}
+          <div class="col-12 d-grid d-md-block">
+            <button class="btn btn-brand btn-sm" type="submit" {% if job.already_applied or not resume_file_id %}disabled{% endif %}>
+              {% if job.already_applied %}
+              Already Applied
+              {% elif not resume_file_id %}
+              Add Resume To Apply
+              {% else %}
+              Submit Application
+              {% endif %}
+            </button>
+          </div>
+        </form>
+      </details>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted mb-0">
+    {% if source == "recommended" %}
+      No relevant jobs found for this resume right now. Try adding more role-specific skills.
+    {% else %}
+      No jobs available right now.
+    {% endif %}
+  </p>
+  {% endif %}
+</div>
+{% endblock %}

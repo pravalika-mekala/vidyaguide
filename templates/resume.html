@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Analyzer | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="hero-card">
+      <h3 class="fw-bold mb-2">Professional Resume Analyzer</h3>
+      <p class="muted mb-4">Upload your resume in PDF, DOCX, or TXT format to get ATS-oriented analysis and role suggestions.</p>
+
+      <form action="/resume/upload" method="post" enctype="multipart/form-data" class="d-grid gap-3">
+        <div>
+          <label class="form-label">Resume file</label>
+          <input type="file" name="file" class="form-control" accept=".pdf,.docx,.txt" required>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="set_default" value="1" id="resumeDefaultCheck">
+          <label class="form-check-label" for="resumeDefaultCheck">Set this as my default resume for fast apply</label>
+        </div>
+        <button class="btn btn-brand" type="submit">Analyze Resume</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

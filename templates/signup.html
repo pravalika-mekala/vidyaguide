@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup | VidyaGuide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark' || !theme) {
+        document.documentElement.classList.add('dark-theme');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark-theme');
+      }
+    })();
+  </script>
+  <div class="app-bg"></div>
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+    <button id="theme-toggle" class="btn btn-sm btn-outline-light border-0 px-2" title="Toggle Theme" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(4px);">
+      <span class="theme-icon">🌓</span>
+    </button>
+  </div>
+
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-5">
+        <div class="hero-card">
+          <h2 class="fw-bold mb-1">Create your account</h2>
+          <p class="muted mb-4">Get AI-powered career guidance in one place.</p>
+
+          {% if error %}
+          <div class="alert alert-danger">{{ error }}</div>
+          {% endif %}
+
+          <form action="/signup" method="post" class="d-grid gap-3">
+            <div class="pt-1">
+              <h6 class="fw-bold mb-2">Personal Details</h6>
+            </div>
+            <div>
+              <label class="form-label">Name</label>
+              <input type="text" name="name" class="form-control" value="{{ name or '' }}" required>
+            </div>
+            <div>
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control" value="{{ email or '' }}" required>
+            </div>
+            <div>
+              <label class="form-label">Phone</label>
+              <input type="text" name="phone" class="form-control" value="{{ phone or '' }}" placeholder="Phone number">
+            </div>
+            <div>
+              <label class="form-label">Current Location</label>
+              <input type="text" name="current_location" class="form-control" value="{{ current_location or '' }}" placeholder="Current city/state">
+            </div>
+            <div>
+              <label class="form-label">College / University</label>
+              <input type="text" name="college" class="form-control" value="{{ college or '' }}" placeholder="College / University">
+            </div>
+            <div>
+              <label class="form-label">Education Level</label>
+              <select name="education_level" class="form-select">
+                <option value="" {% if not education_level %}selected{% endif %}>Select education level</option>
+                <option value="UG" {% if education_level == "UG" %}selected{% endif %}>UG (Undergraduate)</option>
+                <option value="PG" {% if education_level == "PG" %}selected{% endif %}>PG (Postgraduate)</option>
+                <option value="Diploma" {% if education_level == "Diploma" %}selected{% endif %}>Diploma</option>
+                <option value="PhD" {% if education_level == "PhD" %}selected{% endif %}>PhD</option>
+                <option value="Other" {% if education_level == "Other" %}selected{% endif %}>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Course / Degree</label>
+              <input type="text" name="course_name" class="form-control" value="{{ course_name or '' }}" placeholder="e.g. B.Tech CSE, MBA, MCA">
+            </div>
+            <div>
+              <label class="form-label">Graduation Year</label>
+              <input type="number" min="1990" max="2100" name="graduation_year" class="form-control" value="{{ graduation_year or '' }}" placeholder="e.g. 2026">
+            </div>
+
+            <div class="pt-1">
+              <h6 class="fw-bold mb-2">Professional Details</h6>
+            </div>
+            <div>
+              <label class="form-label">Primary Professional Title</label>
+              <input type="text" name="professional_title" class="form-control" value="{{ professional_title or '' }}" placeholder="e.g. Backend Developer Intern">
+            </div>
+            <div>
+              <label class="form-label">Job Titles</label>
+              <input type="text" name="professional_titles" class="form-control" value="{{ professional_titles or '' }}" placeholder="e.g. Backend Developer, Python Developer, API Engineer">
+            </div>
+            <div>
+              <label class="form-label">Experience (years)</label>
+              <input type="number" step="0.1" min="0" name="experience_years" class="form-control" value="{{ experience_years if experience_years is not none else 0 }}">
+            </div>
+            <div>
+              <label class="form-label">Preferred Roles In Priority Order</label>
+              <textarea class="form-control" rows="3" name="preferred_roles" placeholder="One per line or comma separated&#10;Backend Developer&#10;Python Developer&#10;API Engineer">{{ preferred_roles or '' }}</textarea>
+            </div>
+            <div>
+              <label class="form-label">Preferred Locations In Priority Order</label>
+              <textarea class="form-control" rows="3" name="preferred_locations" placeholder="One per line or comma separated&#10;Bangalore&#10;Hyderabad&#10;Remote">{{ preferred_locations or '' }}</textarea>
+            </div>
+            <div>
+              <label class="form-label">Skills Summary</label>
+              <textarea class="form-control" rows="3" name="skills_summary" placeholder="Key technical skills and strengths">{{ skills_summary or '' }}</textarea>
+            </div>
+            <div>
+              <label class="form-label">LinkedIn URL <span class="muted">(Optional)</span></label>
+              <input type="url" name="linkedin_url" class="form-control" value="{{ linkedin_url or '' }}" placeholder="https://www.linkedin.com/in/your-profile">
+            </div>
+            <div>
+              <label class="form-label">GitHub URL <span class="muted">(Optional)</span></label>
+              <input type="url" name="github_url" class="form-control" value="{{ github_url or '' }}" placeholder="https://github.com/your-profile">
+            </div>
+            <div>
+              <label class="form-label">Bio</label>
+              <textarea class="form-control" rows="3" name="bio" placeholder="Short professional summary">{{ bio or '' }}</textarea>
+            </div>
+
+            <div>
+              <label class="form-label">Password</label>
+              <div class="input-group">
+                <input id="password" type="password" name="password" class="form-control" required>
+                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)">Show</button>
+              </div>
+            </div>
+            <div>
+              <label class="form-label">Confirm Password</label>
+              <div class="input-group">
+                <input id="confirm_password" type="password" name="confirm_password" class="form-control" required>
+                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirm_password', this)">Show</button>
+              </div>
+            </div>
+            <button class="btn btn-brand w-100">Send OTP</button>
+          </form>
+
+          <div class="text-center mt-3">
+            <a href="/login" class="text-decoration-none">Already have an account? Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function togglePassword(inputId, button) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === "password") {
+        input.type = "text";
+        button.textContent = "Hide";
+      } else {
+        input.type = "password";
+        button.textContent = "Show";
+      }
+    }
+  </script>
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark-theme');
+      
+      if (isDark) {
+        html.classList.remove('dark-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark-theme');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+    document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+  </script>
+</body>
+</html>

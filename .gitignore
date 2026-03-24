@@ -1,0 +1,45 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+ENV/
+env/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+error_log.txt
+startup_error.txt
+uvicorn_debug.txt
+uvicorn_log.txt
+uvicorn_output.txt
+
+# Media / Artifacts
+uploads/
+brain/
+!brain/.keep # If you want to keep the directory but not the content
+.system_generated/
+.tempmediaStorage/
+browser/
+downloads/
+screenshots/
+recordings/
+
+# Project Specific
+test_ai_out.txt
+test_ask_ai_out.txt
+test_ask_ai_results.txt

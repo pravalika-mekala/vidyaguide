@@ -1,0 +1,4 @@
+﻿DEBUG: GEMINI_API_KEY: AIzaSyCl...
+DEBUG: GEMINI_MODEL: gemini-flash-latest
+DEBUG: legacy_genai: True
+DEBUG: modern_genai: True

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assistant | VidyaGuide{% endblock %}
+
+{% block content %}
+<div class="chat-app">
+  <aside class="chat-sidebar">
+    <div class="chat-sidebar-top">
+      <div class="chat-brand-row">
+        <div class="chat-brand-badge">VG</div>
+        <div>
+          <div class="chat-eyebrow">VidyaGuide AI</div>
+          <h1 class="chat-sidebar-title">AI Assistant</h1>
+        </div>
+      </div>
+      <button id="newChatBtn" type="button" class="btn chat-new-btn">+ New chat</button>
+      <div class="chat-search-wrap">
+        <input id="chatSearch" type="text" class="form-control chat-search-input" placeholder="Search conversations" />
+      </div>
+    </div>
+
+    <div class="chat-sidebar-section">
+      <div class="chat-sidebar-label">Chats</div>
+      <div class="chat-thread-list" id="chatThreadList"></div>
+    </div>
+  </aside>
+
+  <section class="chat-main">
+    <div class="chat-main-bar">
+      <div>
+        <div class="chat-main-title">VidyaGuide AI Assistant</div>
+        <p class="chat-main-subtitle">Ask anything about resumes, jobs, interviews, and learning plans.</p>
+      </div>
+      <div class="chat-main-actions">
+        <button id="micBtn" type="button" class="btn chat-toolbar-btn">Mic</button>
+        <button id="voiceToggleBtn" type="button" class="btn chat-toolbar-btn">Voice: ON</button>
+      </div>
+    </div>
+
+    <div class="chat-stage">
+      <div class="chat-scroll-region">
+        <div class="chat-suggestions" id="chatTopicList"></div>
+        <div id="chatbox" class="chat-window"></div>
+      </div>
+      <div class="chat-composer">
+        <div class="chat-input-shell">
+          <button id="composerAddBtn" type="button" class="chat-composer-icon" aria-label="New chat">+</button>
+          <textarea id="message" class="form-control chat-textarea" rows="1" placeholder="Ask VidyaGuide AI anything about resumes, interviews, projects, or career planning"></textarea>
+          <button id="micInlineBtn" type="button" class="chat-composer-icon" aria-label="Microphone">Mic</button>
+          <button id="sendBtn" type="button" class="btn chat-send-btn" aria-label="Send message">Send</button>
+        </div>
+        <div class="chat-status-row">
+          <span id="voiceStatus" class="chat-status-text">Mic idle</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script id="chatHistorySeed" type="application/json">{{ chat_history_json | safe }}</script>
+<script id="chatThreadsSeed" type="application/json">{{ chat_threads_json | safe }}</script>
+<script id="activeThreadSeed" type="application/json">{{ (active_thread_id or "") | tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/chat.js"></script>
+{% endblock %}
