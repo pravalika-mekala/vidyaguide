@@ -3,22 +3,23 @@
 {% block title %}VidyaGuide - Unlock Your Career Potential{% endblock %}
 
 {% block content %}
-<div class="landing-hero py-5 mb-5">
+<div class="landing-hero py-5 mb-5" style="background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(15, 118, 110, 0.02) 100%);">
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6 text-center text-lg-start animate-fade-in">
-                <h1 class="display-4 fw-800 mb-3">Your Journey, <span class="text-gradient">Our Support.</span></h1>
+                <div class="badge bg-brand-soft text-brand mb-3 px-3 py-2 rounded-pill fw-bold" style="background: rgba(15, 118, 110, 0.1); color: var(--brand);">Empowering the Next Generation of Talent</div>
+                <h1 class="display-4 fw-800 mb-3">Bridge the Gap Between <span class="text-gradient">Learning & Earning.</span></h1>
                 <p class="lead mb-4 opacity-75">
-                    Job hunting is tough, but you don't have to do it alone. VidyaGuide is your personal career partner—helping you sharpen your resume, prep for interviews, and find the right path with ease.
+                    VidyaGuide AI is built for freshers and career starters. We don't just find you jobs—we find your <strong>career path</strong>. Analyze your resume, identify skill gaps, and follow a personalized mentor-led roadmap to your first big break.
                 </p>
                 <div class="d-flex justify-content-center justify-content-lg-start gap-3 animate-slide-up">
-                    <a href="/signup" class="btn btn-lg btn-nav-logout px-4" style="background: #10b981 !important; color: white !important;">Join VidyaGuide</a>
-                    <a href="/login" class="btn btn-lg btn-hero-login px-4">Login</a>
+                    <a href="#how-it-works" class="btn btn-lg btn-outline-brand px-4">See How It Works</a>
+                    <a href="/login" class="btn btn-lg btn-brand px-4" style="background: var(--brand) !important; color: white !important; border: none !important;">Login / Get Started</a>
                 </div>
             </div>
             <div class="col-lg-6 animate-fade-in">
                 <div class="hero-image-container rounded-5 overflow-hidden shadow-lg border">
-                    <img src="/static/images/hero-human.png" alt="Confident Professionals" class="img-fluid hero-img">
+                    <img src="/static/images/hero-human.png" alt="VidyaGuide Career Mentorship" class="img-fluid hero-img">
                 </div>
             </div>
         </div>
@@ -26,26 +27,157 @@
 </div>
 
 <div class="container">
-    <div class="row g-4 mb-5 justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="feature-card h-100 p-4 rounded-4 glass-card border">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="feature-icon-sm me-3">📄</div>
-                    <h3 class="h5 fw-bold mb-0">Resume Support</h3>
-                </div>
-                <p class="small opacity-75 mb-0">We’ll help you highlight your strengths so your resume truly reflects your potential to employers.</p>
-            </div>
+<div class="row g-4 mb-5 justify-content-center">
+    <!-- Section: What You Get -->
+    <div class="col-12 text-center mb-4 mt-5">
+        <h2 class="fw-bold">What You Get with VidyaGuide</h2>
+        <p class="muted mx-auto" style="max-width: 600px;">We provides the tools and mentorship typically reserved for top-tier professionals, now accessible to every fresher.</p>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="benefit-item text-center p-3">
+            <div class="benefit-icon mb-3">🎓</div>
+            <h4 class="h6 fw-bold">Industry Readiness</h4>
+            <p class="small opacity-75">Transform from a student to a professional with a resume that speaks industry language.</p>
         </div>
-        <div class="col-md-6 col-lg-5">
-            <div class="feature-card h-100 p-4 rounded-4 glass-card border">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="feature-icon-sm me-3">🤖</div>
-                    <h3 class="h5 fw-bold mb-0">Career Conversations</h3>
+    </div>
+    <div class="col-md-4">
+        <div class="benefit-item text-center p-3">
+            <div class="benefit-icon mb-3">⚡</div>
+            <h4 class="h6 fw-bold">Speed to Hire</h4>
+            <p class="small opacity-75">Reduce your job search time by focusing on the right skills and the right roles from Day 1.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="benefit-item text-center p-3">
+            <div class="benefit-icon mb-3">🤝</div>
+            <h4 class="h6 fw-bold">Confidence & Support</h4>
+            <p class="small opacity-75">Never feel alone in your journey. Our AI Mentor is always here to guide your next move.</p>
+        </div>
+    </div>
+
+    <!-- Section: How It Works -->
+    <div id="how-it-works" class="col-12 text-center mb-5 mt-5 pt-5">
+        <h2 class="fw-bold">How VidyaGuide Works</h2>
+        <p class="muted">Your 3-step path to career success.</p>
+    </div>
+
+    <div class="col-lg-10">
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="step-card p-4 rounded-4 bg-white border shadow-sm">
+                    <div class="step-number mb-3">1</div>
+                    <h5 class="fw-bold">Upload Resume</h5>
+                    <p class="small opacity-75">Drop your current PDF or DOCX. Our AI deeply scans your technical and soft skills.</p>
                 </div>
-                <p class="small opacity-75 mb-0">Talk to our AI Assistant anytime for interview tips, tech advice, or just a bit of career encouragement.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card p-4 rounded-4 bg-white border shadow-sm">
+                    <div class="step-number mb-3">2</div>
+                    <h5 class="fw-bold">Analyze Gaps</h5>
+                    <p class="small opacity-75">See exactly what skills you're missing for your dream role and get an ATS score.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card p-4 rounded-4 bg-white border shadow-sm">
+                    <div class="step-number mb-3">3</div>
+                    <h5 class="fw-bold">Follow Roadmap</h5>
+                    <p class="small opacity-75">Follow a personalized 4-12 week learning plan to bridge those gaps and get hired.</p>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Section: Features (Existing) -->
+    <div class="col-12 text-center mb-4 mt-5 pt-5">
+        <h2 class="fw-bold">Core Platform Features</h2>
+        <p class="muted">Everything you need in one powerful dashboard.</p>
+    </div>
+    
+    <!-- 1. Career Level -->
+    <div class="col-md-6 col-lg-4">
+        <div class="feature-card h-100 p-4 rounded-4 glass-card border">
+            <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon-sm me-3">📈</div>
+                <h3 class="h5 fw-bold mb-0">Career Benchmarking</h3>
+            </div>
+            <p class="small opacity-75 mb-0">Help freshers understand their current standing in the job market with AI-driven level assessment.</p>
+        </div>
+    </div>
+    <!-- 2. Skill Gaps -->
+    <div class="col-md-6 col-lg-4">
+        <div class="feature-card h-100 p-4 rounded-4 glass-card border">
+            <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon-sm me-3">🔍</div>
+                <h3 class="h5 fw-bold mb-0">Skill Gap Analysis</h3>
+            </div>
+            <p class="small opacity-75 mb-0">Deeply scan your resume to uncover hidden weaknesses and specific technical skill gaps.</p>
+        </div>
+    </div>
+    <!-- 3. Roadmap -->
+    <div class="col-md-6 col-lg-4">
+        <div class="feature-card h-100 p-4 rounded-4 glass-card border">
+            <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon-sm me-3">🗺️</div>
+                <h3 class="h5 fw-bold mb-0">Growth Roadmaps</h3>
+            </div>
+            <p class="small opacity-75 mb-0">Get clear, actionable steps and timed learning plans to become 100% job-ready.</p>
+        </div>
+    </div>
+    <!-- 4. Job Matching -->
+    <div class="col-md-6 col-lg-4">
+        <div class="feature-card h-100 p-4 rounded-4 glass-card border">
+            <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon-sm me-3">🎯</div>
+                <h3 class="h5 fw-bold mb-0">Precision Matching</h3>
+            </div>
+            <p class="small opacity-75 mb-0">Receive job recommendations that perfectly align with your current skills and career goals.</p>
+        </div>
+    </div>
+    <!-- 5. AI Mentor -->
+    <div class="col-md-6 col-lg-4">
+        <div class="feature-card h-100 p-4 rounded-4 glass-card border">
+            <div class="d-flex align-items-center mb-3">
+                <div class="feature-icon-sm me-3">🤖</div>
+                <h3 class="h5 fw-bold mb-0">AI Career Mentor</h3>
+            </div>
+            <p class="small opacity-75 mb-0">Access 24/7 guidance from an AI mentor dedicated to helping you land your first big role.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: var(--brand);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-weight: 800;
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+}
+
+.btn-outline-brand {
+    border: 2px solid var(--brand);
+    color: var(--brand);
+    background: transparent;
+    font-weight: 700;
+}
+
+.btn-outline-brand:hover {
+    background: var(--brand);
+    color: white;
+}
+
+.bg-brand-soft { background: rgba(15, 118, 110, 0.1); }
+</style>
 
     <div class="landing-info rounded-5 p-5 glass-card border text-center animate-fade-in mb-5">
         <h2 class="fw-bold mb-3">Start Small, Dream Big.</h2>

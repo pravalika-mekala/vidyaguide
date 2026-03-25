@@ -264,6 +264,9 @@ def analyze_resume(file_path: str):
             "sections": {},
             "word_count": 0,
             "file_type": file_type,
+            "career_level": "Unknown",
+            "skill_gaps": [],
+            "roadmap": []
         }
 
     normalized = clean_text(text)
@@ -273,6 +276,46 @@ def analyze_resume(file_path: str):
     jobs = predict_jobs(skills)
     score, tips = calculate_ats_score(text, normalized, skills, sections, contact)
 
+    # 1. Career Level Estimation
+    # Simple heuristic: word count and skill count
+    word_count = len(re.findall(r"\w+", text))
+    unique_skills = len(skills)
+    
+    # Check for experience keywords or number of years
+    experience_matches = re.findall(r"(\d+)\+?\s*(?:years?|yrs?)\s+experience", normalized)
+    years = max([int(y) for y in experience_matches] + [0])
+    
+    if years == 0 and unique_skills < 10:
+        career_level = "Fresher"
+    elif years < 3:
+        career_level = "Entry Level / Junior"
+    elif years < 7:
+        career_level = "Mid-Level Professional"
+    else:
+        career_level = "Senior / Expert"
+
+    # 2. Skill Gap Analysis
+    # Compare with the top predicted job role's requirements
+    skill_gaps = []
+    if jobs:
+        target_role = jobs[0]
+        required_skills = JOB_ROLES.get(target_role, [])
+        skill_gaps = [s for s in required_skills if s not in set(skills)]
+
+    # 3. Roadmap Generation (Internal)
+    # This will be used by the frontend to fetch from ROLE_LEARNING_PLAN
+    # or we can attach a baseline roadmap here.
+    roadmap = []
+    if jobs:
+        from app.main import ROLE_LEARNING_PLAN
+        roadmap_data = ROLE_LEARNING_PLAN.get(jobs[0].lower().replace(" ", ""), {}).get("course_structure", [])
+        for step in roadmap_data:
+            roadmap.append({
+                "phase": step[0],
+                "topics": step[1],
+                "duration": step[2]
+            })
+
     return {
         "score": score,
         "skills": skills,
@@ -280,8 +323,11 @@ def analyze_resume(file_path: str):
         "jobs": jobs,
         "contact": contact,
         "sections": sections,
-        "word_count": len(re.findall(r"\w+", text)),
+        "word_count": word_count,
         "file_type": file_type,
+        "career_level": career_level,
+        "skill_gaps": skill_gaps,
+        "roadmap": roadmap
     }
 
 

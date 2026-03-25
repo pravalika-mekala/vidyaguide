@@ -9,13 +9,17 @@
       <h3 class="fw-bold mb-2">ATS Resume Report</h3>
       <p class="muted mb-3">File type: <strong>{{ result.file_type }}</strong> | Word count: <strong>{{ result.word_count }}</strong></p>
 
-      <div class="mb-3">
-        <div class="d-flex justify-content-between mb-2">
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="section-title">Career Level Assessment</span>
+          <span class="badge bg-brand text-white px-3 py-2 rounded-pill shadow-sm" style="background-color: var(--brand) !important;">{{ result.career_level }}</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2 mt-3">
           <span class="section-title">ATS Compatibility Score</span>
           <strong>{{ result.score }} / 100</strong>
         </div>
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" style="width: {{ result.score }}%;">{{ result.score }}%</div>
+        <div class="progress" style="height: 12px; border-radius: 6px; background: rgba(0,0,0,0.05);">
+          <div class="progress-bar" role="progressbar" style="width: {{ result.score }}%; background-color: var(--brand) !important; border-radius: 6px;">{{ result.score }}%</div>
         </div>
       </div>
 
@@ -30,14 +34,27 @@
         {% endif %}
       </div>
 
-      <h5 class="section-title mt-3">Suggested Job Roles</h5>
-      <ul class="list-group mb-0">
+      <h5 class="section-title mt-4">Suggested Job Roles</h5>
+      <div class="mb-4">
         {% for job in result.jobs %}
-          <li class="list-group-item">{{ job }}</li>
+          <div class="d-flex align-items-center p-2 mb-2 bg-light rounded shadow-sm border-start border-4 border-brand" style="border-left-color: var(--brand) !important;">
+            <i class="bi bi-briefcase me-2 text-brand"></i>
+            <span class="fw-bold">{{ job }}</span>
+          </div>
         {% else %}
-          <li class="list-group-item muted">No strong role match yet. Add more role-specific skills and project depth.</li>
+          <div class="p-2 muted italic">No strong role match yet. Add more role-specific skills and project depth.</div>
         {% endfor %}
-      </ul>
+      </div>
+
+      {% if result.skill_gaps %}
+      <h5 class="section-title mt-4 text-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i> Skill Gaps Identified</h5>
+      <p class="small muted mb-3">To become highly competitive for your target roles, consider upgrading these skills:</p>
+      <div class="mb-4">
+        {% for gap in result.skill_gaps %}
+          <span class="badge bg-danger-subtle text-danger border border-danger-subtle me-2 mb-2 px-3 py-2 rounded-pill">{{ gap }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
 
       {% if set_as_default %}
       <div class="alert alert-success mt-4 mb-0">This resume has been saved as your default resume for fast apply.</div>
@@ -154,12 +171,52 @@
 </div>
 
 <div class="panel-card p-4 mt-4">
-  <h5 class="section-title">Improvement Recommendations</h5>
-  <ul class="list-group mt-3">
-    {% for tip in result.tips %}
-      <li class="list-group-item">{{ tip }}</li>
+  <h5 class="section-title mb-4"><i class="bi bi-map-fill me-2 text-brand"></i> Your Personal Career Roadmap</h5>
+  
+  {% if result.roadmap %}
+  <div class="roadmap-container position-relative ps-4 py-2 border-start border-2 border-brand-light" style="border-left-color: rgba(15, 118, 110, 0.2) !important;">
+    {% for step in result.roadmap %}
+    <div class="roadmap-step position-relative mb-5">
+      <div class="step-marker position-absolute rounded-circle bg-brand shadow" style="width: 16px; height: 16px; left: -33px; top: 4px; background-color: var(--brand) !important;"></div>
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <h6 class="fw-800 text-brand mb-0">{{ step.phase }}</h6>
+        <span class="badge bg-light text-muted border smallest">{{ step.duration }}</span>
+      </div>
+      <p class="mb-0 small fw-bold opacity-75">{{ step.topics }}</p>
+    </div>
     {% endfor %}
-  </ul>
-  <a href="/resume" class="btn btn-brand mt-3">Analyze Another Resume</a>
+    <div class="roadmap-step position-relative">
+      <div class="step-marker position-absolute rounded-circle bg-success shadow" style="width: 16px; height: 16px; left: -33px; top: 4px;"></div>
+      <h6 class="fw-800 text-success mb-0">Job Ready & Placed</h6>
+      <p class="mb-0 small opacity-75">Start your dream career with VidyaGuide support.</p>
+    </div>
+  </div>
+  {% else %}
+  <p class="muted">Upload a complete resume to generate your custom learning path.</p>
+  {% endif %}
+
+  <div class="mt-5 pt-4 border-top">
+    <h5 class="section-title">Improvement Recommendations</h5>
+    <ul class="list-group list-group-flush mt-3">
+      {% for tip in result.tips %}
+        <li class="list-group-item border-0 ps-0 py-2"><i class="bi bi-check2-circle text-success me-2"></i> {{ tip }}</li>
+      {% endfor %}
+    </ul>
+    <div class="d-flex gap-3 mt-4">
+        <a href="/resume" class="btn btn-brand px-4 shadow-sm">Analyze Another</a>
+        <a href="/chatbot" class="btn btn-outline-brand ms-2 px-4 shadow-sm">Talk to AI Mentor</a>
+    </div>
+  </div>
 </div>
+
+<style>
+.bg-brand { background-color: var(--brand) !important; }
+.text-brand { color: var(--brand) !important; }
+.border-brand { border-color: var(--brand) !important; }
+.btn-brand { background: var(--brand); color: white; border: none; font-weight: 700; }
+.btn-brand:hover { background: var(--brand-strong); color: white; transform: translateY(-1px); }
+.btn-outline-brand { border: 2px solid var(--brand); color: var(--brand); background: transparent; font-weight: 700; }
+.btn-outline-brand:hover { background: var(--brand); color: white; }
+.badge-soft { background: rgba(15, 118, 110, 0.1); color: var(--brand); font-weight: 700; }
+</style>
 {% endblock %}
