@@ -1,7 +1,2 @@
-cd "c:\Users\MEKALA PRAVALIKA\Downloads\vidyaguide"
-.\venv\Scripts\Activate.ps1
-uvicorn app.main:app --reload
-OR 
-cd "c:\Users\MEKALA PRAVALIKA\Downloads\vidyaguide"
-.\venv\Scripts\python.exe -m uvicorn app.main:app --reload
+
 
